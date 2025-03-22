@@ -11,9 +11,10 @@
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Headers.TryGetValue("TenantId", out var tenantId))
+            if (context.Request.Headers.TryGetValue("TenantId", out var tenantIdStr)
+            && int.TryParse(tenantIdStr, out var tenantId))
             {
-                context.Items["TenantId"] = tenantId.ToString();
+                context.Items["TenantId"] = tenantId;
             }
 
             await _next(context);
